@@ -66,6 +66,24 @@ def genes_repeated(N, df):
     # Returns a list of the genes repeated at least N times.
     return df[df.sum(axis=1) >= N].index
 
+def genes_repeated_same_module(N,df):
+    '''
+    Args:
+        N (int): the number of repetitions that you want to know about.
+        df (dataframe): The dataframe you want to test the collumns of.
+    Returns:
+        repeated (dataframe): A dataframe with the same collumns of df, dropped
+            if there are no values in it, and contains a row of a list of each
+            gene repeated that many times.
+    '''
+    dictionary = {}
+    for name in df.columns:
+        mask = df[name] >= N
+        if mask.any():
+            dt[name] = list(df[mask].index.values)
+    df_return = pd.DataFrame(dt)
+    return df_return
+
 
 # Write function to save it TODO
 
