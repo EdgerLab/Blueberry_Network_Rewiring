@@ -26,7 +26,7 @@ def process(folder):
     print(total_df)
     print(genes_repeated(5, total_df))
     print(uniques(total_df))
-
+    save(total_df)
 
 def import_dataframe(folder):
     """
@@ -86,6 +86,12 @@ def genes_repeated_same_module(N,df):
 
 
 # Write function to save it TODO
+def save(df,filename = 'results.csv'):
+    df.to_csv(filename)
+
+def read(filename):
+    df = pd.read_csv(filename)
+    print(df) 
 
 if __name__ == "__main__":
     """
@@ -104,5 +110,10 @@ if __name__ == "__main__":
     coloredlogs.install(level=log_level)
 
     """
-    # Process
-    process("/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT/")
+    read_only = True
+    if read_only:
+        read('results.csv')
+    else:
+        # Process
+        process("/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT/")
+        #process("/home/alder/research/Blueberry_Data/WGNCA_Data/missing_modulecolors_BB/")
