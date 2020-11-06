@@ -87,11 +87,11 @@ def genes_repeated_same_module(N,df):
 
 # Write function to save it TODO
 def save(df,filename = 'results.csv'):
-    df.to_csv(filename)
+    df.to_csv(filename,sep='\t')
 
 def read(filename):
-    df = pd.read_csv(filename)
-    print(df) 
+    df = pd.read_csv(filename,sep = '\t')
+    print(df)
 
 if __name__ == "__main__":
     """
@@ -110,7 +110,7 @@ if __name__ == "__main__":
     coloredlogs.install(level=log_level)
 
     """
-    read_only = True
+    read_only = False
     if read_only:
         read('results.csv')
     else:
