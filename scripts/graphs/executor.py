@@ -11,6 +11,7 @@ import os
 import logging
 import coloredlogs
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # from module import module
 
@@ -25,7 +26,7 @@ def process(folder):
     total_df = import_dataframe(folder)
     print(total_df)
     print(genes_repeated(5, total_df))
-    print(uniques(total_df))
+    print(genes_repeated_same_module(2,total_df))
     save(total_df)
 
 def import_dataframe(folder):
@@ -80,10 +81,26 @@ def genes_repeated_same_module(N,df):
     for name in df.columns:
         mask = df[name] >= N
         if mask.any():
-            dt[name] = list(df[mask].index.values)
-    df_return = pd.DataFrame(dt)
-    return df_return
+            dictionary[name] = list(df[mask].index.values)
+    return dictionary
 
+def create_histogram(sr,name):
+    """
+    Args:
+        sr (pandas series): The series of the genes
+    Outputs:
+        fig (plt figure): Histogram of the number of ocurrences.
+    """
+    sr = sr[sr!=0]
+    values = sr.value_counts().values
+    fig =  plt.bar(range(1,len(values)+1),values,align = 'edge')
+    plt.xlabel("# of Repetitions")
+    plt.ylabel("# of Genes")
+    plt.yscale('log')
+    for i in range(1,len(values)+1):
+        plt.text(i,values[i-1]+.01,str(values[i-1]))
+    plt.savefig("hist_" + name, bbox_inches='tight', dpi=150)
+    return fig
 
 # Write function to save it TODO
 def save(df,filename = 'results.csv'):
@@ -91,8 +108,13 @@ def save(df,filename = 'results.csv'):
 
 def read(filename):
     df = pd.read_csv(filename,sep = '\t')
-    print(df)
+    df.set_index(df.columns[0],inplace=True)
 
+
+    name = df.columns[0]
+    for name in df.columns:
+        fig = create_histogram(df[name],name)
+        plt.clf()
 if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser(description="")
@@ -110,10 +132,10 @@ if __name__ == "__main__":
     coloredlogs.install(level=log_level)
 
     """
-    read_only = False
+    read_only = True
     if read_only:
         read('results.csv')
     else:
         # Process
-        process("/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT/")
-        #process("/home/alder/research/Blueberry_Data/WGNCA_Data/missing_modulecolors_BB/")
+        process("/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT_with_duplicates/")
+        #process("/home/alder/research/Blueberry_Data/WGCNA_Data/missing_modulecolors_BB/")
