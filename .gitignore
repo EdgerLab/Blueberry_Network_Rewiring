@@ -2,6 +2,7 @@
 *.tex
 *.log
 *.pyc
+*.png
 
 # Exclude pycache folder
 Code/__pycache__/*
