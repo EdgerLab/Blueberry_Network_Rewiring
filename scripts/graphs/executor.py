@@ -102,7 +102,6 @@ def create_histogram(sr,name):
     plt.savefig("hist_" + name, bbox_inches='tight', dpi=150)
     return fig
 
-# Write function to save it TODO
 def save(df,filename = 'results.csv'):
     df.to_csv(filename,sep='\t')
 
