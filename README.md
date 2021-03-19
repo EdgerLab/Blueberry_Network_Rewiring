@@ -72,3 +72,6 @@ In regards to the code, I follow the tutorials found at this [link](https://horv
 * WGCNA == 1.69
 * tidyverse == 1.3.0
 * docstring == 1.0.0
+
+##Graphs
+The main purpose of the graph code is to read in all of the data from the modules about the number of times a gene is repeated in that module and combine this data into a useful dataframe. This code also has secondary purposes such as to take a look at other important things by creating histograms of each individual module, and has a number of other useful functions for slicing the dataframe in certain ways to answer different questions we might have about the data. These purposes are mostly for one time use, and in order to make use of this functionality you should go into the code, set boolean read_only to true, and edit the read function.

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-
 """
-Master code file.
+Process creates the dataframe of all the modules and the number of times each
+gene has been repeated in each module from the file location and then saves it in the
+working directory.
+Alternative functions for working with this dataframe are create_histogram,
+genes_repeated, genes_repeated_same_module, uniques, etc. For more information
+about these functions, or to use them, refer to functions.
 """
 
 __author__ = "Alder Fulton"
@@ -134,24 +138,13 @@ def read(filename):
 
 
 if __name__ == "__main__":
-    """
     parser = argparse.ArgumentParser(description="")
-    path_main = os.path.abspath(__file__)
-
-    # TODO add your arguments here. Some arguments will be directories
-
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="set debugging level to DEBUG"
-    )
+    parser.add_argument("input_directory",type=str, help="Path to the directory
+    containing all of the files you need.")
 
     args = parser.parse_args()
-    log_level = logging.DEBUG if args.verbose else logging.INFO
-    logger = logging.getLogger(__name__)
-    coloredlogs.install(level=log_level)
-
-    """
-    path = "/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT_with_duplicates/"
-
+    #path = "/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT_with_duplicates/"
+    path = args.input_directory
     read_only = False
     if read_only:
         read("results.csv")
@@ -160,10 +153,3 @@ if __name__ == "__main__":
         process(path)
 
 # TODO add this to the readme.
-"""
-Process creates the dataframe from the file location and then saves it in the
-working directory.
-Alternative functions for working with this dataframe are create_histogram,
-genes_repeated, genes_repeated_same_module, uniques, etc. For more information
-about these functions, or to use them, refere to file.
-"""
