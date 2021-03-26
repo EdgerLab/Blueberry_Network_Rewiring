@@ -50,7 +50,9 @@ def import_dataframe(folder):
         if files.endswith(".tsv"):
             df_list.append(
                 pd.value_counts(
-                    pd.read_csv(folder + files, names=[files[0:-4]]).iloc[:, 0]
+                    pd.read_csv(os.path.join(folder, files), names=[files[0:-4]]).iloc[
+                        :, 0
+                    ]
                 )
             )
             df_names.append(files[0:-4])
@@ -103,7 +105,8 @@ def create_histogram(sr, name):
     # Creates a histogram of a single module.
     """
     Args:
-        sr (pandas series): The series of the genes
+        sr (pandas series): The series of the genes.
+        name (string): The name of the module.
     Outputs:
         fig (plt figure): Histogram of the number of ocurrences.
     """
@@ -113,6 +116,7 @@ def create_histogram(sr, name):
     plt.xlabel("# of Repetitions")
     plt.ylabel("# of Genes")
     plt.yscale("log")
+    plt.title(name)
     for i in range(1, len(values) + 1):
         plt.text(i, values[i - 1] + 0.01, str(values[i - 1]))
     plt.savefig("hist_" + name, bbox_inches="tight", dpi=150)
@@ -124,7 +128,7 @@ def save(df, filename="results.tsv"):
     df.to_csv(filename, sep="\t")
 
 
-def read(filename):
+def make_graphs(filename):
     """
     Reads in the tsv files. Also is the main function that is currently edited.
     """
@@ -139,15 +143,22 @@ def read(filename):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="")
-    parser.add_argument("input_directory",type=str, help="Path to the directory
-    containing all of the files you need.")
-
+    parser.add_argument(
+        "input_directory",
+        type=str,
+        help="Path to the directory containing all of the files you need.",
+    )
+    parser.add_argument(
+        "--create_histograms",
+        action="store_true",
+        help="Creates a histogram for every module of the number of repetitions of each gene in that file.",
+    )
     args = parser.parse_args()
-    #path = "/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT_with_duplicates/"
+    args.input_directory = os.path.abspath(args.input_directory)
+    # path = "/home/alder/research/Blueberry_Data/WGCNA_Data/modulecolors_AT_with_duplicates/"
     path = args.input_directory
-    read_only = False
-    if read_only:
-        read("results.csv")
+    if args.create_histograms:
+        make_graphs("results.tsv")
     else:
         # Process
         process(path)
